@@ -1,0 +1,1 @@
+<x-link href="/posts?tags={{ $tag->name }}" class="italic">{{ $tag->name }}</x-link>
