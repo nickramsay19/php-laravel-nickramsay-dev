@@ -8,14 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
-
-    protected $primaryKey = 'slug';
-    protected $keyType = 'string';
-    public $incrementing = false;
 
     protected $guarded = [];
 
@@ -37,7 +34,14 @@ class Post extends Model {
         return $this->published_at;
     }
 
-    // return value it was before
+    // utilities 
+
+    public static function viewable() {
+        return self::whereNotNull('published_at')
+            ->orWhere('author_id', Auth::user()?->id);
+    }
+
+    // return the value it was before
     public function unpublish() {
         $publishedAt = $this->published_at;
 
@@ -54,20 +58,20 @@ class Post extends Model {
     }
 
     public function tags(): BelongsToMany {
-        //return $this->belongsToMany(Tag::class, 'post_tags');
-        return $this->belongsToMany(
-            Tag::class,
-            'post_tags',      // pivot table
-            'post_slug',      // foreign key on post_tags
-            'tag_id',         // foreign key on post_tags
-            'slug',           // local key on posts
-            'id'              // local key on tags
-        );
+        return $this->belongsToMany(Tag::class, 'post_tags');
     }
 
     // attributes
 
     public function getCreatedAtDateAttribute(): string {
         return Carbon::parse($this->created_at)->format('Y-m-d');
+    }
+
+    public function getPublishedAtDateAttribute(): string {
+        return Carbon::parse($this->published_at)->format('Y-m-d');
+    }
+
+    public function getIsPublishedAttribute(): bool {
+        return isset($this->published_at);
     }
 }

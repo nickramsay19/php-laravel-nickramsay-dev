@@ -7,3 +7,4 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // setup htmx
 //htmx.config.defaultSwapStyle = 'none';
+

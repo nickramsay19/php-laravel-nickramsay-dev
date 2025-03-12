@@ -150,8 +150,6 @@ blockquote p {
     background-color: var(--color-bg);
 }
 
-
-
 /* == FORMS == */
 input, textarea {
     border-color: #74bfff; 
@@ -169,3 +167,7 @@ input[type=submit]:hover {
     background-color: #74bfff;
     color: #171717;
 }
+
+::placeholder {
+    color: var(--color-cod-gray-500);
+ }

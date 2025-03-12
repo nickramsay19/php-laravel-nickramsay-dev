@@ -10,5 +10,5 @@
         </small>
     @endif
 
-    <x-posts.list :posts="$posts" :show-admin-options="true" />
+    <x-posts.list :posts="$posts" :show-commands="true" />
 </x-layout>

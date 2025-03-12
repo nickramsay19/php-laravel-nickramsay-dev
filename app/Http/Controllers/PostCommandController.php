@@ -11,15 +11,25 @@ use App\Models\Post;
 use App\Models\Tag;
 
 class PostCommandController extends Controller {
-    public function destroy(Post $post) {
+    public function destroy(Request $request, Post $post) {
+        if ($request->user()->cannot('delete', $post)) {
+            abort(403);
+        }
+        
         return response($post->destroy(), 200);
     }
 
-    public function publish(Post $post) {
+    public function publish(Request $request, Post $post) {
+        if ($request->user()->cannot('update', $post)) {
+            abort(403);
+        }
         return response($post->publish(), 200);
     }
 
     public function unpublish(Request $request, Post $post) {
+        if ($request->user()->cannot('update', $post)) {
+            abort(403);
+        }
         return response($post->unpublish(), 200);
     }
 }

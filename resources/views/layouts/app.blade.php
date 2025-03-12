@@ -10,13 +10,14 @@
         <meta name="viewport" content="width=device-width" />
 
         <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/gh/Emtyloc/json-enc-custom@main/json-enc-custom.js"></script>
+        @vite(['resources/css/app.css'])
         
         <title>{{ isset($title) ? ($title . ' | ') : '' }} nickramsay.dev</title>
     </head>
     <body class="bg-dark-alpha text-rose-50 m-0 text-sm font-mono" hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'>
         <div class="bg-dark-beta rounded-sm w-full md:w-60/100 m-0 md:m-auto mt-0 md:mt-1 p-1 px-2">
-            @if (Auth::check()) 
+            @if (!Auth::guest()) 
                 <div class="mb-4">
                     <small class="text-xs">Welcome back {{ Auth::user()->name }}!</small>
                 </div>
@@ -63,7 +64,7 @@
                 {{ $slot }}
             </main>
 
-            <footer id="footer" class="text-center block mt-4">
+            <footer id="footer" class="text-center block mt-5">
                 nickramsay.dev | 
                 <x-nav.link to="home">home</x-nav.link>
                 <x-nav.link to="posts">posts</x-nav.link>
@@ -75,5 +76,7 @@
                 
             </footer>
         </div>
+
+        @vite(['resources/js/app.js'])
     </body>
 </html>

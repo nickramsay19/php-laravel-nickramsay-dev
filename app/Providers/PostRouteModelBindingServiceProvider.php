@@ -16,11 +16,7 @@ class PostRouteModelBindingServiceProvider extends ServiceProvider {
 
     public function boot(): void {
         Route::bind('post', function (string $slug) {
-            return Post::where('slug', $slug)
-                ->when(!Auth::check(), function (Builder $query) {
-                    $query->whereNotNull('published_at');
-                })
-                ->first() ?? null;
+            return Post::where('slug', $slug)->first() ?? null;
         });
     }
 }

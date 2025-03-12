@@ -1,18 +1,39 @@
 <x-layout title="Create">
-    <x-form method="POST" :action="route('posts.store')">
-        <x-form.input-group name="title" label="Title" style="width: 100%;" />
+    <form hx-post="{{ route('posts.store') }}" class="flex flex-col">
+        <input name="title" type="text" required />
+        <textarea name="body"></textarea>
 
-        <x-form.input-group name="body" type="textarea" label="Post body"  rows="5" style="width: 100%;" />
+        <script>
 
-        @foreach (\App\Models\Tag::all()->pluck('name') as $tag)
-            <x-form.input-group name="tags[]" type="checkbox" value="{{ $tag }}" label="{{ $tag }}"/>
-        @endforeach
+            function handleMultipleOptionMouseDown(event) {
+                console.log('clicked!');//, this, this.selected);
+                this.selected = !this.selected;
+                event.preventDefault();
+            }
+        </script>
 
+        <select multiple class="flex-row [&_option]:inline [&_option]:not-last:mr-2">
+            @foreach (\App\Models\Tag::all()->pluck('name') as $tag)
+                <option name="tags[]" value="{{ $tag }}" onmousedown="handleMultipleOptionMouseDown" class="italic bg-transparent checked:text-accent checked:font-semibold">{{ $tag }}</option>
+            @endforeach
+        </select>
 
-        <x-form.input-group name="published" type="checkbox" label="Publish"/>
+        <button
+            type="submit"
+            name="published" 
+            value="0"
+            class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
+        >
+            Save
+        </button>
 
-        <x-form.input-group name="save" type="submit" value="save" />
-
-
-    </x-form>
+        <button
+            type="submit"
+            name="published" 
+            value="1"
+            class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
+        >
+            Save & Publish
+        </button>
+    </form>
 </x-layout>

@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 class HTMXRedirect {
     public function handle(Request $request, Closure $next): Response {
         $response = $next($request);
-        if ($request->header('HX-Request', 'false') == 'true') {
+
+        if ($request->header('HX-Request', 'false') == 'true' && $response->headers->get('HX-Redirect') == null) {
             $response->header('HX-Refresh', 'true');
         }
 

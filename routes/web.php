@@ -33,10 +33,10 @@ Route::group(['middleware' => 'web', 'guest'], function () {
             Route::controller(PostController::class)->group(function () {
                 
                 Route::get('/', 'show')->name('.show');
-                
+
                 Route::middleware('auth')->group(function () {
-                    //Route::get('/edit', 'edit')->name('.edit');
-                    //Route::put('/', 'update')->name('.update');
+                    Route::get('/edit', 'edit')->name('.edit');
+                    Route::put('/', 'update')->name('.update');
                     Route::delete('/', 'destroy')->name('.destroy');
                 });
             });

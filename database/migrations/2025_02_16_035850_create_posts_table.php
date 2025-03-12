@@ -5,15 +5,14 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('posts', function (Blueprint $table) { 
-            $table->string('slug')->primary();
+            $table->id();
+            $table->string('slug')->unique();
             $table->text('title');
             $table->longText('body');
             $table->foreignIdFor(User::class, 'author_id');
@@ -26,8 +25,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('posts');
     }
 };
