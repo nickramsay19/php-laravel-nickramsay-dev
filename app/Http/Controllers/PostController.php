@@ -19,6 +19,7 @@ class PostController extends Controller {
         Gate::authorize('viewAny', Post::class);
 
         $tags = $request->get('tags', []);
+        $search = $request->get('search', '');
 
         return view('pages.posts.index', [
             'posts' => Post::viewable()->with('tags')
@@ -27,8 +28,13 @@ class PostController extends Controller {
                         $query->whereIn('tags.name', $tags);
                     });
                 })
+                ->when(strlen($search) > 0, function ($query) use ($search) {
+                    $query->whereRaw('LOWER(title) LIKE LOWER(?)', ["%{$search}%"])
+                        ->orWhereHas('tags', function ($query) use ($search) {
+                            $query->whereRaw('LOWER(tags.name) LIKE LOWER(?)', ["%{$search}%"]);
+                        });
+                })
                 ->get(),
-            'tags' => $tags,
         ]);
     }
 
@@ -40,11 +46,11 @@ class PostController extends Controller {
     }
 
     public function create() {
-        Gate::authorize('create', $post);
+        Gate::authorize('create', Post::class);
         if (Auth::check()) {
             return view('pages.posts.create');
         } else {
-            // show the 404 post page
+            // show the 404 post page (as if user were attempting to read a page with title "create")
             return view('pages.posts.show', [
                 'post' => null,
             ]);
@@ -61,9 +67,9 @@ class PostController extends Controller {
             'published_at' => $request->published ? Carbon::now() : null,
         ]);
 
-        $post->tags()->attach(Tag::whereIn('name', $request->tags)->pluck('id'));
+        $post->tags()->attach(Tag::whereIn('name', $request['tags'])->pluck('id'));
 
-        return $post;
+        return response($post)->header('HX-Redirect', route('posts.show', $post->slug));
     }
 
     public function edit(Post $post) {
@@ -92,6 +98,6 @@ class PostController extends Controller {
 
     public function destroy(Post $post) {
         $post->tags()->detach();
-        return $post->delete();
+        return response($post->delete())->header('HX-Redirect', route('posts'));
     }
 }

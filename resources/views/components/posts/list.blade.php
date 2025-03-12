@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-2">
+<div {{ $attributes->merge(['class' => 'flex flex-col gap-2']) }}>
     @if (Auth::check() && isset($showCommands) && $showCommands)
         <x-link to="posts.create">Create a new post</x-link>
     @endif

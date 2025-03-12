@@ -19,6 +19,14 @@
             {{ $slot }}
         </x-form.textarea>
     @else
-        <x-form.input id="{{ $id }}" type="{{ $type ?? 'text' }}" name="{{ $name ?? '' }}" placeholder="{{ $placeholder ?? ($label ?? '') }}" value="{{ $value ?? '' }}" />
+        <x-form.input 
+            id="{{ $id }}" 
+            type="{{ $type ?? 'text' }}" 
+            name="{{ $name ?? '' }}" 
+            placeholder="{{ $placeholder ?? ($label ?? '') }}" 
+            value="{{ $value ?? '' }}" 
+            class="px-0.5" 
+            {{ $attributes->whereStartsWith('x-') }}
+        />
     @endif
 </div>

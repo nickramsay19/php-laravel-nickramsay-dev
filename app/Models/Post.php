@@ -37,8 +37,10 @@ class Post extends Model {
     // utilities 
 
     public static function viewable() {
-        return self::whereNotNull('published_at')
-            ->orWhere('author_id', Auth::user()?->id);
+        return self::where(function ($query) {
+            $query->whereNotNull('published_at')
+                ->orWhere('author_id', Auth::user()?->id);
+        });
     }
 
     // return the value it was before

@@ -1,39 +1,41 @@
 <x-layout title="Create">
-    <form hx-post="{{ route('posts.store') }}" class="flex flex-col">
-        <input name="title" type="text" required />
-        <textarea name="body"></textarea>
+    <form hx-post="{{ route('posts.store') }}" hx-ext='json-enc-custom' class="flex flex-col">
+        
+        <x-form.input-group name="title" type="text" label="Title" placeholder="Your post's title" required/>
 
-        <script>
-
-            function handleMultipleOptionMouseDown(event) {
-                console.log('clicked!');//, this, this.selected);
-                this.selected = !this.selected;
-                event.preventDefault();
-            }
-        </script>
-
-        <select multiple class="flex-row [&_option]:inline [&_option]:not-last:mr-2">
+        <x-form.input-group name="body" type="textarea" label="Body" placeholder="The post's contents..." rows="25" class="mt-3"></x-form.input-group>
+        
+        <select x-ref="tag-select" name="tags" multiple class="flex-row mt-3 [&_option]:inline [&_option]:not-last:mr-2">
+            <option disabled class="text-rose-50">Tags:</option>
             @foreach (\App\Models\Tag::all()->pluck('name') as $tag)
-                <option name="tags[]" value="{{ $tag }}" onmousedown="handleMultipleOptionMouseDown" class="italic bg-transparent checked:text-accent checked:font-semibold">{{ $tag }}</option>
+                <option value="{{ $tag }}" onmousedown="handleMultipleOptionMouseDown" class="italic bg-transparent checked:text-accent checked:font-semibold">{{ $tag }}</option>
             @endforeach
         </select>
 
-        <button
-            type="submit"
-            name="published" 
-            value="0"
-            class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
-        >
-            Save
-        </button>
+        <div class="flex flex-row gap-2 mt-3">
+            <button
+                type="submit"
+                name="published" 
+                value="0"
+                class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
+            >
+                Save
+            </button>
 
-        <button
-            type="submit"
-            name="published" 
-            value="1"
-            class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
-        >
-            Save & Publish
-        </button>
+            <button
+                type="submit"
+                name="published" 
+                value="1"
+                class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
+            >
+                Save & Publish
+            </button>
+        </div>
     </form>
+    <script>
+        function handleMultipleOptionMouseDown(event) {
+            this.selected = !this.selected;
+            event.preventDefault();
+        }
+    </script>
 </x-layout>

@@ -20,6 +20,7 @@ class SearchPostsRequest extends FormRequest {
      */
     public function rules(): array {
         return [
+            'search' => ['sometimes', 'string'],
             /*'slugs' => ['sometimes', 'list', 'filled'],
             'slugs.*' => ['string', 'exists:posts,slug'],
             'titles' => ['sometimes', 'list', 'filled'],

@@ -39,11 +39,6 @@ class PostRequest extends FormRequest
     }
 
     protected function prepareForValidation() {
-        if ($this->routeIs('posts.store') || $this->routeIs('posts.create')) {
-            $this->merge([
-                'tags' => [],
-                //'published' => false,
-            ]);
-        }
+        
     }
 }

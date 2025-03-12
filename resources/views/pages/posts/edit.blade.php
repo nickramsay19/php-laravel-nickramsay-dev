@@ -1,5 +1,5 @@
 <x-layout title="Edit">
-    <form hx-put="{{ route('posts.update', ['post' => $post->slug]) }}"  hx-ext='json-enc-custom' class="flex flex-col">
+    <form hx-put="{{ route('posts.update', ['post' => $post->slug]) }}" hx-ext='json-enc-custom' class="flex flex-col">
         
         <x-form.input-group name="title" type="text" label="Title" placeholder="Your post's title" :value="$post->title" required/>
 
@@ -40,14 +40,6 @@
         function handleMultipleOptionMouseDown(event) {
             this.selected = !this.selected;
             event.preventDefault();
-        }
-
-        function handleAfterRequest(event) {
-            //console.log(event);
-            //hx-on::after-request="handleAfterRequest(event)"
-            //let response = event.detail.xhr.response;
-            //console.log(response);
-            //window.location.href='{{ route('posts.show', $post->slug) }}'
         }
     </script>
 </x-layout>
