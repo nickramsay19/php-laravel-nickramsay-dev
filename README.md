@@ -1,9 +1,17 @@
 ## todo
 - admin log page
-- permissions table, that policies check
 - determine selected tags from url
 - add filtering to post search
 - add sorting to post search
+
+### dynamic pages
+- make some posts marked as a page, by route
+- add configurable nav bars, where multiple page posts can be selected and in a specific order
+
+### roles and permissions
+- roles table
+- refer to user's roles for policy rules
+- permissions table, that policies check
 
 
 
