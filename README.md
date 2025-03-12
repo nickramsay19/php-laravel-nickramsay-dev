@@ -1,7 +1,9 @@
 ## todo
 - admin log page
 - permissions table, that policies check
-- 
+- determine selected tags from url
+- add filtering to post search
+- add sorting to post search
 
 
 
