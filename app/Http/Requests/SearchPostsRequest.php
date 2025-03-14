@@ -21,41 +21,47 @@ class SearchPostsRequest extends FormRequest {
     public function rules(): array {
         return [
             'search' => ['sometimes', 'string'],
-            /*'slugs' => ['sometimes', 'list', 'filled'],
+            'sort_by' => ['sometimes'],
+            'slugs' => ['sometimes', 'list', 'filled'],
             'slugs.*' => ['string', 'exists:posts,slug'],
             'titles' => ['sometimes', 'list', 'filled'],
             'titles.*' => ['string', 'exists:posts,title'],
-            'authors.*' => ['sometimes', 'list'],
-            'authors.*' => ['string', 'exists:users,name'],*/
-
-            'tags.*' => ['string', 'exists:tags,name'],
-            /*'published' => ['sometimes', 'boolean', 'filled', 'prohibited_if:published_after', 'prohibited_if:published_before'],
+            'authors' => ['sometimes'],
+            'published' => ['sometimes', 'boolean', 'filled', 'prohibits:published_after', 'prohibits:published_before'],
             'created_after' => ['sometimes', 'date'],
             'created_before' => [
                 'sometimes', 
                 'date', 
                 Rule::when(isset($this->created_after), ['before:created_after']),
             ],
-            'published_after' => ['sometimes', 'date', 'prohibited'],
+            'published_after' => ['sometimes', 'date'],
             'published_before' => [
                 'sometimes', 
                 'date', 
                 Rule::when(isset($this->published_after), ['before:published_after']),
                 Rule::when(isset($this->created_after), ['before:created_after']),
             ],
-            'sort_by' => ['sometimes'],*/
+            'tags.*' => ['string', 'exists:tags,name'],
         ];
     }
 
-    protected function prepareForValidation() {
-        if ($this->get('tags') && gettype($this->tags) == 'string') {
-            $this->tags = array_filter(explode(',', $this->tags) ?? [], function ($tag) {
-                return strlen($tag) > 0;
+    protected function prepareCommaDelimitedStringToArrayForValidation(string $field) {
+        if ($this->get($field) && gettype($this->$field) == 'string') {
+            $this->$field = array_filter(explode(',', $this->$field) ?? [], function ($segment) {
+                return strlen($segment) > 0;
             });
 
             $this->merge([
-                'tags' => $this->tags,
+                $field => $this->$field,
             ]);
         }
+    }
+
+    protected function prepareForValidation() {
+        $this->prepareCommaDelimitedStringToArrayForValidation('sort_by');
+        $this->prepareCommaDelimitedStringToArrayForValidation('slugs');
+        $this->prepareCommaDelimitedStringToArrayForValidation('titles');
+        $this->prepareCommaDelimitedStringToArrayForValidation('authors');
+        $this->prepareCommaDelimitedStringToArrayForValidation('tags');
     }
 }

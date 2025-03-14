@@ -13,26 +13,43 @@ use App\Http\Requests\PostRequest;
 use App\Http\Requests\SearchPostsRequest;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 
 class PostController extends Controller {
     public function index(SearchPostsRequest $request) {
         Gate::authorize('viewAny', Post::class);
 
-        $tags = $request->get('tags', []);
         $search = $request->get('search', '');
+        $sortBys = $request->get('sort_by', []);
 
+        $authorNames = $request->get('authors');
+        if ($authorNames !== null) {
+            $authorNames = User::whereIn('name', $authorNames)->pluck('name')->toArray();
+        }
+        
         return view('pages.posts.index', [
             'posts' => Post::viewable()->with('tags')
-                ->when(count($tags) > 0, function ($query) use ($tags) {
-                    $query->whereHas('tags', function ($query) use ($tags) {
-                        $query->whereIn('tags.name', $tags);
+                ->whereSlugIn($request->get('slugs'))
+                ->whereTitleIn($request->get('titles'))
+                ->whereAuthorNameIn($authorNames)
+                ->whereCreatedAfter($request->get('created_after'))
+                ->wherePublishedAfter($request->get('published_after'))
+                ->wherePublished(boolval($request->get('published')))
+                ->whereHasTags($request->get('tags', []))
+                ->when(strlen($search) > 0, function ($query) use ($search) {
+                    $query->where(function ($query) use ($search) {
+                        $query->whereRaw('LOWER(title) LIKE LOWER(?)', ["%{$search}%"])
+                            ->orWhereHas('tags', function ($query) use ($search) {
+                                $query->whereRaw('LOWER(tags.name) LIKE LOWER(?)', ["%{$search}%"]);
+                            });
                     });
                 })
-                ->when(strlen($search) > 0, function ($query) use ($search) {
-                    $query->whereRaw('LOWER(title) LIKE LOWER(?)', ["%{$search}%"])
-                        ->orWhereHas('tags', function ($query) use ($search) {
-                            $query->whereRaw('LOWER(tags.name) LIKE LOWER(?)', ["%{$search}%"]);
-                        });
+                ->when(count($sortBys) > 0, function ($q) use ($sortBys) {
+                    foreach ($sortBys as $sortBy) {
+                        $sortByCol = ltrim($sortBy, '-+');
+                        $dir = $sortBy[0] == '-' ? 'desc' : 'asc';
+                        $q->orderBy($sortByCol, $dir);
+                    }
                 })
                 ->get(),
         ]);

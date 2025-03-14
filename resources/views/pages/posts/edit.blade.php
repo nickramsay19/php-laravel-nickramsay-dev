@@ -1,18 +1,18 @@
 <x-layout title="Edit">
     <form hx-put="{{ route('posts.update', ['post' => $post->slug]) }}" hx-ext='json-enc-custom' class="flex flex-col">
         
-        <x-form.input-group name="title" type="text" label="Title" placeholder="Your post's title" :value="$post->title" required/>
+        <x-input name="title" type="text" label="Title" placeholder="Your post's title" :value="$post->title" required />
 
-        <x-form.input-group name="body" type="textarea" label="Body" placeholder="The post's contents..." rows="25" class="mt-3">
+        <x-input name="body" type="textarea" label="Body" placeholder="The post's contents..." rows="25" class="mt-3">
             {{ $post->body }}
-        </x-form.input-group>
+        </x-input>
         
-        <select x-ref="tag-select" name="tags" multiple class="flex-row mt-3 [&_option]:inline [&_option]:not-last:mr-2">
-            <option disabled class="text-rose-50">Tags:</option>
+        <x-input.select name="tags" value="{{ $post->tags->pluck('name')->toJson() }}" multiple>
+            <option disabled>Tags:</option>
             @foreach (\App\Models\Tag::all()->pluck('name') as $tag)
-                <option value="{{ $tag }}" onmousedown="handleMultipleOptionMouseDown" class="italic bg-transparent checked:text-accent checked:font-semibold">{{ $tag }}</option>
+                <option value="{{ $tag }}">{{ $tag }}</option>
             @endforeach
-        </select>
+        </x-input.select>
 
         <div class="flex flex-row gap-2 mt-3">
             <button
@@ -36,10 +36,4 @@
             @endif
         </div>
     </form>
-    <script>
-        function handleMultipleOptionMouseDown(event) {
-            this.selected = !this.selected;
-            event.preventDefault();
-        }
-    </script>
 </x-layout>

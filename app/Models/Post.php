@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 
 class Post extends Model {
     /** @use HasFactory<\Database\Factories\PostFactory> */
@@ -75,5 +76,69 @@ class Post extends Model {
 
     public function getIsPublishedAttribute(): bool {
         return isset($this->published_at);
+    }
+
+    // scopes
+
+    public function scopeWhereSlug(Builder $query, ?string $slug): Builder {
+        return $slug !== null ? $query->where('slug', $slug) : $query;
+    }
+
+    public function scopeWhereSlugIn(Builder $query, ?array $slugs): Builder {
+        return $slugs !== null ? $query->whereIn('slug', $slugs) : $query;
+    }
+
+    public function scopeWhereTitle(Builder $query, ?string $title): Builder {
+        return $title !== null ? $query->where('title', $title) : $query;
+    }
+
+    public function scopeWhereTitleIn(Builder $query, ?array $titles): Builder {
+        return $titles !== null ? $query->whereIn('title', $titles) : $query;
+    }
+
+    public function scopeWhereAuthorName(Builder $query, ?string $authorName): Builder {
+        return $authorName !== null ? $query->whereRelation('author', 'name', $authorName) : $query;
+    }
+
+    public function scopeWhereAuthorNameIn(Builder $query, ?array $authorNames): Builder {
+        return $authorNames !== null
+            ? $query->whereHas('author', function ($q) use ($authorNames) {
+                $q->whereIn('name', $authorNames);
+            })
+            : $query;
+    }
+
+    public function scopeWherePublished(Builder $query, ?bool $published): Builder {
+        return $query->unless($published == null, function ($q) {
+            $q->when($published === true, function ($q) {
+                $q->whereNotNull('published_at');
+            }, function ($q) {
+                $q->whereNull('published_at');
+            });
+        });
+    }
+
+    public function scopeWhereCreatedAfter(Builder $query, ?string $date): Builder {
+        return $date !== null ? $query->where('created_at', '>=', $date) : $query;
+    }
+
+    public function scopeWhereCreatedBefore(Builder $query, ?string $date): Builder {
+        return $date !== null ? $query->where('created_at', '<', $date) : $query;
+    }
+
+    public function scopeWherePublishedAfter(Builder $query, ?string $date): Builder {
+        return $date !== null ? $query->where('published_at', '>=', $date) : $query;
+    }
+
+    public function scopeWherePublishedBefore(Builder $query, ?string $date): Builder {
+        return $date !== null ? $query->where('published_at', '<', $date) : $query;
+    }
+
+    public function scopeWhereHasTags(Builder $query, ?array $tags): Builder {
+        return !empty($tags)
+            ? $query->whereHas('tags', function ($q) use ($tags) {
+                $q->whereIn('name', $tags);
+            })
+            : $query;
     }
 }

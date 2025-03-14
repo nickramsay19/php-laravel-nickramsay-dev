@@ -1,46 +1,75 @@
 <x-layout title="Posts">
-    <div x-data="searchComponent()">
-        <div class="flex flex-row gap-1 text-center mt-2">
-            <x-form.input-group 
-                type="text" 
-                x-model="query"
-                x-on:input.debounce.300ms="updateSearch()"
-                placeholder="search..." 
-                class="flex-grow"
+    <div 
+        x-data="{
+            params: new URLSearchParams(window.location.search),
+            fetch() {
+                const url = new URL(window.location);
+
+                // fetch the full page but replace only the #posts-list div
+                fetch(url.href, {
+                    headers: { 'HX-Request': 'true' } // simulate HTMX-like header
+                })
+                .then(response => response.text())
+                .then(html => {
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(html, 'text/html');
+                    let newContent = doc.querySelector('#posts-list');
+                    document.querySelector('#posts-list').replaceWith(newContent);
+                })
+                .catch(error => console.error('Error fetching search results:', error));
+            },
+            setParam(param, value) {
+                const url = new URL(window.location);
+                if (value == null || value === '' || (Array.isArray(value) && value.length === 0)) {
+                    url.searchParams.delete(param);
+                } else {
+                    url.searchParams.set(param, value);
+                }
+                window.history.pushState({}, '', url);
+                this.fetch();
+            },
+            getTags() {
+                return this.params.get('tags')?.split(',').map(item => item.trim()) ?? [];
+            },
+        }"
+        x-init="console.log('tags', getTags())"
+    >
+        <x-input 
+            type="text" 
+            x-bind:value="params.get('search')"
+            x-on:input.debounce.300ms="setParam('search', $event.target.value)"
+            placeholder="search..." 
+            class="mt-2"
+        />
+
+        <div class="flex flex-row gap-1 justify-between w-full text-center mt-2 pb-1">
+            <x-input.select 
+                name="tags"
+                
+                ::value="getTags()"
+                x-on:input.debounce.300ms="setParam('tags', $event.target.value)"
+                class="w-full"
+                multiple
+            >
+                <option disabled>tags:</option>
+                @foreach (\App\Models\Tag::all()->pluck('name') as $tag)
+                    <option value="{{ $tag }}" class="hover:underline">{{ $tag }}</option>
+                @endforeach
+            </x-input.select>
+
+            <x-input
+                type="date"
+                name="created_after" 
+                label="after: "
+                x-bind:value="params.get('created_after')"
+                x-on:input.debounce.300ms="setParam('created_after', $event.target.value)"
+                class="flex-none"
+                inline
             />
-            <x-button class="text-center">v</x-button>
         </div>
 
-        <x-posts.list id="posts-list" :posts="$posts" :show-commands="true" class="flex-none" />
+        <hr class="text-dark-gamma last:hidden" />
+        
+        <x-posts.list id="posts-list" :posts="$posts" :show-commands="true" class="flex-none mt-2" />
     </div>
-
-    <script>
-        function searchComponent() {
-            return {
-                query: new URLSearchParams(window.location.search).get('search') || '',
-                updateSearch() {
-                    const url = new URL(window.location);
-                    if (this.query) {
-                        url.searchParams.set('search', this.query);
-                    } else {
-                        url.searchParams.delete('search');
-                    }
-                    window.history.pushState({}, '', url);
-
-                    // fetch the full page but replace only the #posts-list div
-                    fetch(url.href, {
-                        headers: { 'HX-Request': 'true' } // simulate HTMX-like header
-                    })
-                    .then(response => response.text())
-                    .then(html => {
-                        let parser = new DOMParser();
-                        let doc = parser.parseFromString(html, 'text/html');
-                        let newContent = doc.querySelector('#posts-list');
-                        document.querySelector('#posts-list').replaceWith(newContent);
-                    })
-                    .catch(error => console.error('Error fetching search results:', error));
-                }
-            };
-        }
-    </script>
 </x-layout>

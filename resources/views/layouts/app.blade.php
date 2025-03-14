@@ -17,29 +17,32 @@
     </head>
     <body class="bg-dark-alpha text-rose-50 m-0 text-sm font-mono" hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'>
         <div class="bg-dark-beta rounded-sm w-full md:w-60/100 m-0 md:m-auto mt-0 md:mt-1 p-1 px-2">
-            @if (!Auth::guest()) 
-                <div class="mb-4">
-                    <small class="text-xs">Welcome back {{ Auth::user()->name }}!</small>
-                </div>
-            @endif
+            
 
             <header class="mb-2">
-                <span class="flex flex-inline align-middle gap-1 mb-2">
-                    <div class="inline align-middle [&_span]:first:text-bright *:inline *:align-middle *:my-auto">
-                        <x-nav.link to="home" class="">nickramsay.dev</x-nav.link> 
-                        <span>/</span>
+                <div class="flex flex-row gap-1 justify-between w-full text-center">
+                    <span class="flex flex-inline align-middle gap-1 mb-2">
+                        <div class="inline align-middle [&_span]:first:text-bright *:inline *:align-middle *:my-auto">
+                            <x-nav.link to="home" class="">nickramsay.dev</x-nav.link> 
+                            <span>/</span>
 
-                    @for ($i = 0; $i < count(Request::segments())-1; $i++)
-                        <x-link href="/{{ implode('/', array_slice(Request::segments(), 0, $i+1)) }}">{{ Request::segment($i+1) }}</x-link>
-                        <span>/</span>
-                    @endfor
+                        @for ($i = 0; $i < count(Request::segments())-1; $i++)
+                            <x-link href="/{{ implode('/', array_slice(Request::segments(), 0, $i+1)) }}">{{ Request::segment($i+1) }}</x-link>
+                            <span>/</span>
+                        @endfor
 
-                    @if (count(Request::segments()))
-                        <x-link class="text-rose-50">{{ Str::lower($attributes->get('title', 'Nicholas Ramsay')) }}</x-link>
+                        @if (count(Request::segments()))
+                            <x-link class="text-rose-50">{{ Str::lower($attributes->get('title', 'Nicholas Ramsay')) }}</x-link>
+                        @endif
+
+                        </div>
+                    </span>
+                    @if (!Auth::guest()) 
+                        <aside class="flex-none">
+                            <small class="text-sm">user: {{ Auth::user()->name }}</small>
+                        </aside>
                     @endif
-
-                    </div>
-                </span>
+                </div>
 
                 <nav class="flex justify-between mb-1 border-b-2 border-b-accent align-middle">
                     <h1 class="border-b-0 heading-1 text-accent font-bold border-0 self-end" style="color: #74bfff;">{{ $attributes->get('title', 'Nicholas Ramsay') ?? 'Nicholas Ramsay' }}</h1>

@@ -1,9 +1,9 @@
 <x-layout title="Create">
     <form hx-post="{{ route('posts.store') }}" hx-ext='json-enc-custom' class="flex flex-col">
         
-        <x-form.input-group name="title" type="text" label="Title" placeholder="Your post's title" required/>
+        <x-input name="title" type="text" label="Title" placeholder="Your post's title" required/>
 
-        <x-form.input-group name="body" type="textarea" label="Body" placeholder="The post's contents..." rows="25" class="mt-3"></x-form.input-group>
+        <x-input name="body" type="textarea" label="Body" placeholder="The post's contents..." rows="25" class="mt-3"></x-form.input-group>
         
         <select x-ref="tag-select" name="tags" multiple class="flex-row mt-3 [&_option]:inline [&_option]:not-last:mr-2">
             <option disabled class="text-rose-50">Tags:</option>

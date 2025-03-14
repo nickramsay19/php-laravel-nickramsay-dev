@@ -1,7 +1,9 @@
 @php
     $id = 'input-' . ($name ?? '') . '-' . Str::random(5);
 
-    $inline = isset($inline) && $inline;
+    $inline = isset($inline) && boolval($inline);
+    $mylabel = isset($label) ? $label : '';
+    \Log::info('got inline' . strval($inline) . ') ' . $mylabel);
 
     if (!isset($type)) {
         $type = 'text';
@@ -13,13 +15,12 @@
         <label for="{{ $id }}">{{ $label }}</label>
     @endif
 
-
     @if ($type == 'textarea')
-        <x-form.textarea id="{{ $id }}" type="{{ $type ?? 'text' }}" name="{{ $name ?? '' }}" placeholder="{{ $placeholder ?? ($label ?? '') }}" {{ $attributes->filter(fn ($value, $key) => $key != 'class') }}>
+        <x-input.textarea id="{{ $id }}" type="{{ $type ?? 'text' }}" name="{{ $name ?? '' }}" placeholder="{{ $placeholder ?? ($label ?? '') }}" {{ $attributes->filter(fn ($value, $key) => $key != 'class') }}>
             {{ $slot }}
-        </x-form.textarea>
+        </x-input.textarea>
     @else
-        <x-form.input 
+        <input
             id="{{ $id }}" 
             type="{{ $type ?? 'text' }}" 
             name="{{ $name ?? '' }}" 
