@@ -36,7 +36,7 @@
     x-modelable="value"
     x-init="
         options = Array.from($refs.formSelect.children); 
-        value = value?.length ? value : $el.value;
+        value = value?.length ? value : ($el.value ?? []);
     "
     {{ $attributes->whereStartsWith('x-') }}
     {{ $attributes->whereStartsWith(':') }}

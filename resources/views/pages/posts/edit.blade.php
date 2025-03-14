@@ -7,14 +7,16 @@
             {{ $post->body }}
         </x-input>
         
-        <x-input.select name="tags" value="{{ $post->tags->pluck('name')->toJson() }}" multiple>
+        <x-input.select name="tags" value="{{ $post->tags->pluck('name')->toJson() }}" class="my-2" multiple>
             <option disabled>Tags:</option>
             @foreach (\App\Models\Tag::all()->pluck('name') as $tag)
                 <option value="{{ $tag }}">{{ $tag }}</option>
             @endforeach
         </x-input.select>
 
-        <div class="flex flex-row gap-2 mt-3">
+        <hr class="text-dark-gamma" />
+
+        <div class="flex flex-row gap-2 mt-2">
             <button
                 type="submit"
                 name="published" 
