@@ -25,6 +25,7 @@ class AdminSeeder extends Seeder {
 
         $adminRole = Role::firstWhere('name', 'admin');
         $adminRole->users()->attach($admin);
+        $adminRole->managers()->attach($admin);
         //$admin->roles()->attach(Role::firstWhere('name', 'admin'));
     }
 }

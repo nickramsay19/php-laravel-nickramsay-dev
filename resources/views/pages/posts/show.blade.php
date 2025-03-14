@@ -8,7 +8,7 @@
                 @endforeach
             </div>
 
-            <x-posts.command-bar :post="$post" class="justify-end"/>
+            <x-posts.command-menu :post="$post" class="justify-end" />
         </div>
 
         <p style="margin-top: 1em;">{{ $post->body }}</p>

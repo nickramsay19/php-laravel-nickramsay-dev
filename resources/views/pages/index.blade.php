@@ -4,6 +4,6 @@
 
     <section class="mt-2">
         <x-link to="posts" class="text-lg font-mono underline">Posts</x-link>
-        <x-posts.list :posts="$posts" :show-admin-options="false" />
+        <x-posts.list :posts="$posts" readonly />
     </section>
 </x-layout>

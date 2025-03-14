@@ -16,17 +16,14 @@ class RoleSeeder extends Seeder {
         $createPosts = Permission::updateOrCreate(['name' => 'create_posts'])->id;
         $updatePosts = Permission::updateOrCreate(['name' => 'update_posts'])->id;
         $deletePosts = Permission::updateOrCreate(['name' => 'delete_posts'])->id;
-        $restorePosts = Permission::updateOrCreate(['name' => 'restore_posts'])->id;
-        $forceDeletePosts = Permission::updateOrCreate(['name' => 'force_delete_posts'])->id;
         $updateOwnPosts = Permission::updateOrCreate(['name' => 'update_own_posts'])->id;
         $deleteOwnPosts = Permission::updateOrCreate(['name' => 'delete_own_posts'])->id;
         $viewUnpublishedPosts = Permission::updateOrCreate(['name' => 'view_unpublished_posts'])->id;
 
+        $viewRoles = Permission::updateOrCreate(['name' => 'view_roles'])->id;
         $createRoles = Permission::updateOrCreate(['name' => 'create_roles'])->id;
         $updateRoles = Permission::updateOrCreate(['name' => 'update_roles'])->id;
         $deleteRoles = Permission::updateOrCreate(['name' => 'delete_roles'])->id;
-        $restoreRoles = Permission::updateOrCreate(['name' => 'restore_roles'])->id;
-        $forceDeleteRoles = Permission::updateOrCreate(['name' => 'force_delete_roles'])->id;
 
         Role::updateOrCreate(['name' => 'admin'])->permissions()->sync(Permission::all()->pluck('id'));
 

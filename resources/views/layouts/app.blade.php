@@ -71,6 +71,11 @@
                 nickramsay.dev | 
                 <x-nav.link to="home">home</x-nav.link>
                 <x-nav.link to="posts">posts</x-nav.link>
+                
+                @if (Auth::permissions()->contains('view_roles'))
+                    <x-nav.link to="roles">roles</x-nav.link>
+                @endif
+
                 @if (Auth::check()) 
                     <x-nav.link to="logout">logout</x-nav.link>
                 @else

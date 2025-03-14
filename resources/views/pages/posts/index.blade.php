@@ -70,6 +70,6 @@
 
         <hr class="text-dark-gamma last:hidden" />
         
-        <x-posts.list id="posts-list" :posts="$posts" :show-commands="true" class="flex-none mt-2" />
+        <x-posts.list id="posts-list" :posts="$posts" class="flex-none mt-2" />
     </div>
 </x-layout>
