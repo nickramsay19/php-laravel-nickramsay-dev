@@ -4,15 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Models\Role;
+use App\Models\User;
+
 return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('role_managers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->timestamps();
+            $table->foreignIdFor(Role::class);
+            $table->foreignIdFor(User::class);
         });
     }
 
@@ -20,6 +24,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('role_managers');
     }
 };

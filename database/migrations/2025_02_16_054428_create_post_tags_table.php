@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Post;
 use App\Models\Tag;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('post_tags', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -25,8 +23,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('post_tags');
     }
 };

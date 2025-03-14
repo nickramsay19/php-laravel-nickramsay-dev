@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostCommandController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 
 use App\Models\Post;
 
@@ -15,6 +16,12 @@ use App\Models\Post;
 Route::group(['middleware' => 'web', 'guest'], function () {
     Route::controller(HomeController::class)->name('home')->group(function () {
         Route::get('/', 'index');
+    });
+
+    Route::name('roles')->prefix('/roles')->group(function () {
+        Route::controller(RoleController::class)->name('roles')->group(function () {
+            Route::get('/', 'index');
+        });
     });
     
     Route::name('posts')->prefix('/posts')->group(function () {

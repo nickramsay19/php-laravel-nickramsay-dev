@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -42,5 +41,16 @@ class User extends Authenticatable
 
     public function posts() {
         return $this->hasMany(Post::class, 'author_id');
+    }
+
+    public function roles() {
+        return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    public function permissions() {
+        return $this->belongsToMany(Permission::class, 'role_permissions', 'role_id', 'permission_id')
+            ->distinct();
+            //->join('user_roles', 'role_permissions.role_id', '=', 'user_roles.role_id')
+            //->where('user_roles.user_id', $this->id);
     }
 }
