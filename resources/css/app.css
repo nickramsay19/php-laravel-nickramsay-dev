@@ -2,9 +2,6 @@
 @source "../views";
 
 @theme {
-
-    
-
     --color-cod-gray-50: #f6f6f6;
     --color-cod-gray-100: #e7e7e7;
     --color-cod-gray-200: #d1d1d1;
@@ -171,3 +168,29 @@ input[type=submit]:hover, button:hover {
 ::placeholder {
     color: var(--color-cod-gray-500);
  }
+
+/* == POST BODY == */
+
+.post-body {
+    all: revert;
+}
+
+.post-body * {
+    all: revert;
+}
+
+.post-body ul {
+    padding-inline-start: 1em;
+}
+
+.post-body blockquote {
+    border-left: 2px solid var(--color-dark-epsilon);
+    color: var(--color-chicago-300);
+    margin-left: 0;
+    padding: 0 1em;
+}
+
+.post-body h2  {
+    font-size: var(--text-xl);
+    color: var(--color-accent-light);
+}
