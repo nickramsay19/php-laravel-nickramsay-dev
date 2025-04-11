@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder {
             'name' => 'nick',
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => Hash::make('123'),
+            'password' => Hash::make(env('DEFAULT_SEED_PASSWORD', '123')),
             'remember_token' => Str::random(10),
         ]);
 

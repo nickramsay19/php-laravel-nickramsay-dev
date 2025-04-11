@@ -11,7 +11,7 @@
             <x-posts.command-menu :post="$post" class="justify-end" />
         </div>
 
-        <p style="margin-top: 1em;">{{ $post->body }}</p>
+        <div style="margin-top: 1em;">{!! $post->body !!}</div>
     @else
         There is no post with by this name. Go <x-link to="home">home</x-link>?
     @endif
