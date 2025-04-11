@@ -32,7 +32,6 @@
                 return this.params.get('tags')?.split(',').map(item => item.trim()) ?? [];
             },
         }"
-        x-init="console.log('tags', getTags())"
     >
         <x-input 
             type="text" 
