@@ -51,6 +51,7 @@ class PostController extends Controller {
                         $q->orderBy($sortByCol, $dir);
                     }
                 })
+                ->orderBy('created_at')
                 ->get(),
         ]);
     }
