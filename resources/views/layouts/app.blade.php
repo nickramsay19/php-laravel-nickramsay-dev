@@ -70,7 +70,7 @@
                 <x-nav.link to="home">home</x-nav.link>
                 <x-nav.link to="posts">posts</x-nav.link>
 
-                @canany (['create', 'update', 'delete'], \App\Models\Tag::class)
+                @can ('create', \App\Models\Tag::class)
                     <x-nav.link to="tags">tags</x-nav.link>
                 @endcan
                 
