@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Post;
 
-class PostRequest extends Request {
+class PostRequest extends FormRequest {
     /**
      * Get the validation rules that apply to the request.
      *

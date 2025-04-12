@@ -78,13 +78,13 @@ class PostController extends Controller {
         Gate::authorize('create', Post::class);
 
         $post = Post::factory()->create([
-            'title' => $request->title,
-            'body' => $request->body,
+            'title' => $request->safe()->title,
+            'body' => $request->safe()->body,
             'author_id' => Auth::user()->id,
-            'published_at' => $request->published ? Carbon::now() : null,
+            'published_at' => $request->safe()->published ? Carbon::now() : null,
         ]);
 
-        $post->tags()->attach(Tag::whereIn('name', $request['tags'])->pluck('id'));
+        $post->tags()->attach(Tag::whereIn('name', $request->safe()->tags)->pluck('id'));
 
         return response($post)->header('HX-Redirect', route('posts.show', $post->slug));
     }
@@ -104,10 +104,10 @@ class PostController extends Controller {
         $request->whenHas('title', function ($newTitle) use (&$slug) {
             $slug = slug($newTitle);
         });
-        
+
         // update the post
         $post->update([
-            ...$request->only(['title', 'body']),
+            ...$request->safe()->only(['title', 'body']),
             'slug' => $slug,
         ]);
 

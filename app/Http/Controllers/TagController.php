@@ -27,7 +27,7 @@ class TagController extends Controller {
         Gate::authorize('create', Tag::class);
 
         return response(Tag::create([
-            'name' => $request->name,
+            'name' => $request->safe()->name,
         ]))->header('HX-Redirect', route('tags'));
     } 
 
@@ -43,7 +43,7 @@ class TagController extends Controller {
         Gate::authorize('update', $tag);
 
         return response($tag->update([
-            'name' => $request->name,
+            'name' => $request->safe()->name,
         ]))->header('HX-Redirect', route('tags'));
     }
 
