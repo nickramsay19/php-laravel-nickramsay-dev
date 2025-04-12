@@ -17,8 +17,6 @@
     </head>
     <body class="bg-dark-alpha text-rose-50 m-0 text-sm font-mono" hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'>
         <div class="bg-dark-beta rounded-sm w-full md:w-60/100 m-0 md:m-auto mt-0 md:mt-1 p-1 px-2">
-            
-
             <header class="mb-2">
                 <div class="flex flex-row gap-1 justify-between w-full text-center">
                     <span class="flex flex-inline align-middle gap-1 mb-2">
@@ -71,10 +69,14 @@
                 nickramsay.dev | 
                 <x-nav.link to="home">home</x-nav.link>
                 <x-nav.link to="posts">posts</x-nav.link>
+
+                @canany (['create', 'update', 'delete'], \App\Models\Tag::class)
+                    <x-nav.link to="tags">tags</x-nav.link>
+                @endcan
                 
-                @if (Auth::permissions()->contains('view_roles'))
+                @can ('viewAny', \App\Models\Role::class)
                     <x-nav.link to="roles">roles</x-nav.link>
-                @endif
+                @endcan
 
                 @if (Auth::check()) 
                     <x-nav.link to="logout">logout</x-nav.link>

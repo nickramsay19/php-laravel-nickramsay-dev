@@ -2,9 +2,11 @@
 
 namespace App\Policies;
 
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TagPolicy {
     /**
@@ -25,21 +27,21 @@ class TagPolicy {
      * Determine whether the user can create models.
      */
     public function create(User $user): bool {
-        return true;
+        return Auth::permissions()->contains('create_tags');
     }
 
     /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Tag $tag): bool {
-        return false;
+        return Auth::permissions()->contains('update_tags');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Tag $tag): bool {
-        return false;
+        return Auth::permissions()->contains('delete_tags');
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Http\Controllers\PostCommandController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TagController;
 
 use App\Models\Post;
 
@@ -50,6 +51,20 @@ Route::group(['middleware' => 'web', 'guest'], function () {
                 Route::post('/trash', 'trash')->name('.trash');
                 Route::post('/publish', 'publish')->name('.publish');
                 Route::post('/unpublish', 'unpublish')->name('.unpublish');
+            });
+        });
+    });
+
+    Route::name('tags')->prefix('/tags')->group(function () {
+        Route::controller(TagController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/create', 'create')->name('.create');
+            Route::post('/', 'store')->name('.store');
+        
+            Route::prefix('/{tag:name}')->group(function() {
+                Route::get('/edit', 'edit')->name('.edit');
+                Route::put('/', 'update')->name('.update');
+                Route::delete('/', 'destroy')->name('.destroy');
             });
         });
     });

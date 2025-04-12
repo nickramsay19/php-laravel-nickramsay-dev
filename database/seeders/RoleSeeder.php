@@ -20,6 +20,10 @@ class RoleSeeder extends Seeder {
         $deleteOwnPosts = Permission::updateOrCreate(['name' => 'delete_own_posts'])->id;
         $viewUnpublishedPosts = Permission::updateOrCreate(['name' => 'view_unpublished_posts'])->id;
 
+        $createTags = Permission::updateOrCreate(['name' => 'create_tags'])->id;
+        $updateTags = Permission::updateOrCreate(['name' => 'update_tags'])->id;
+        $deleteTags = Permission::updateOrCreate(['name' => 'delete_tags'])->id;
+
         $viewRoles = Permission::updateOrCreate(['name' => 'view_roles'])->id;
         $createRoles = Permission::updateOrCreate(['name' => 'create_roles'])->id;
         $updateRoles = Permission::updateOrCreate(['name' => 'update_roles'])->id;
