@@ -118,7 +118,7 @@
     --color-dark-beta: var(--color-woodsmoke-950);
     --color-dark-gamma: var(--color-chicago-950);
     --color-dark-delta: var(--color-neutral-700);
-    --color-dark-epsilon: var(--color-chicago-600);
+    --color-dark-zeta: var(--color-chicago-300);
 
     /* color theme */
     --color-accent: var(--color-malibu-400);
@@ -185,7 +185,7 @@ input[type=submit]:hover, button:hover {
 
 .post-body blockquote {
     border-left: 2px solid var(--color-dark-epsilon);
-    color: var(--color-chicago-300);
+    color: var(--color-dark-zeta);
     margin-left: 0;
     padding: 0 1em;
 }
@@ -193,4 +193,13 @@ input[type=submit]:hover, button:hover {
 .post-body h2  {
     font-size: var(--text-xl);
     color: var(--color-accent-light);
+}
+
+.post-body a {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+.post-body a:visited {
+    color: var(--color-dark-zeta);
 }
