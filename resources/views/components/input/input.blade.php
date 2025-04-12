@@ -3,7 +3,6 @@
 
     $inline = isset($inline) && boolval($inline);
     $mylabel = isset($label) ? $label : '';
-    \Log::info('got inline' . strval($inline) . ') ' . $mylabel);
 
     if (!isset($type)) {
         $type = 'text';
