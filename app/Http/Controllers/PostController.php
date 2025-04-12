@@ -98,17 +98,22 @@ class PostController extends Controller {
 
     public function update(PostRequest $request, Post $post) {
 
-        // determine the new slug
-        $slug = slug($request->title);
+        // calculate new slug if title has changed
+        $slug = $post->slug;
+        $request->whenHas('title', function ($newTitle) use (&$slug) {
+            $slug = slug($newTitle);
+        });
         
+        // update the post
         $post->update([
-            ...$request->safe()->except(['published', 'tags']),
+            ...$request->safe()->only(['title', 'body']),
             'slug' => $slug,
-            'published_at' => $request->published ? Carbon::now() : null,
         ]);
 
         // change tags
-        $post->tags()->sync(Tag::whereIn('name', $request['tags'])->pluck('id'));
+        $request->whenHas('tags', function ($tags) use ($post) {
+            $post->tags()->sync(Tag::whereIn('name', $tags)->pluck('id'));
+        });
 
         return response($post)->header('HX-Redirect', route('posts.show', $slug));
     }

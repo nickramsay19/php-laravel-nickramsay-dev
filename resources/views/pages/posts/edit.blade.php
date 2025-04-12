@@ -19,23 +19,10 @@
         <div class="flex flex-row gap-2 mt-2">
             <button
                 type="submit"
-                name="published" 
-                value="0"
                 class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
             >
                 Save
             </button>
-
-            @if (!$post->is_published)
-                <button
-                    type="submit"
-                    name="published" 
-                    value="1"
-                    class="bg-dark-beta hover:bg-accent border border-accent text-light cursor-pointer px-0.5"
-                >
-                    Save & Publish
-                </button>
-            @endif
         </div>
     </form>
 </x-layout>
