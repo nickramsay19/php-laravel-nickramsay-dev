@@ -18,8 +18,8 @@
     <body class="bg-dark-alpha text-rose-50 m-0 text-sm font-mono" hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'>
         <div class="bg-dark-beta rounded-sm w-full md:w-60/100 m-0 md:m-auto mt-0 md:mt-1 p-1 px-2">
             <header class="mb-2">
-                <div class="flex flex-row gap-1 justify-between w-full text-center">
-                    <span class="flex flex-inline align-middle gap-1 mb-2">
+                <div class="flex flex-row gap-1 justify-between w-full">
+                    <span class="flex flex-inline align-middle gap-1 md:mb-2">
                         <div class="inline align-middle [&_span]:first:text-bright *:inline *:align-middle *:my-auto">
                             <x-nav.link to="home" class="">nickramsay.dev</x-nav.link> 
                             <span>/</span>
@@ -30,13 +30,13 @@
                         @endfor
 
                         @if (count(Request::segments()))
-                            <x-link class="text-rose-50">{{ Str::lower($attributes->get('title', 'Nicholas Ramsay')) }}</x-link>
+                            <x-link class="!hidden md:!inline text-rose-50">{{ Str::lower($attributes->get('title', 'Nicholas Ramsay')) }}</x-link>
                         @endif
 
                         </div>
                     </span>
                     @if (!Auth::guest()) 
-                        <aside class="flex-none">
+                        <aside class="hidden md:block flex-none">
                             <small class="text-sm">user: {{ Auth::user()->name }}</small>
                         </aside>
                     @endif
@@ -45,7 +45,7 @@
                 <nav class="flex justify-between mb-1 border-b-2 border-b-accent align-middle">
                     <h1 class="border-b-0 heading-1 text-accent font-bold border-0 self-end" style="color: #74bfff;">{{ $attributes->get('title', 'Nicholas Ramsay') ?? 'Nicholas Ramsay' }}</h1>
                     
-                    <div class="flex justify-end gap-3 mr-2 mb-1">
+                    <div class="hidden md:flex justify-end gap-3 mr-2 mb-1 hidden">
                         <x-nav.social-icon-link href="https://github.com/nickramsay19" aria-labelledby="Github">
                             <x-icon.github class="w-7" />
                         </x-nav.social-icon-link>
