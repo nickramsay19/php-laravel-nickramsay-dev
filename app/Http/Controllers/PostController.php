@@ -107,7 +107,7 @@ class PostController extends Controller {
         
         // update the post
         $post->update([
-            ...$request->safe()->only(['title', 'body']),
+            ...$request->only(['title', 'body']),
             'slug' => $slug,
         ]);
 
