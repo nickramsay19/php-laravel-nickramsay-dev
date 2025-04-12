@@ -26,7 +26,7 @@ class HomeController extends Controller {
         Gate::authorize('viewAny', Post::class);
 
         return view('pages.index', [
-            'posts' => Post::viewable()->with('tags')->take(5)->get(),
+            'posts' => Post::viewable()->with('tags')->take(5)->orderBy('created_at', 'desc')->get(),
         ]);
     }
 }
