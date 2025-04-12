@@ -90,13 +90,14 @@ class PostController extends Controller {
     }
 
     public function edit(Post $post) {
-        Gate::authorize('create', $post);
+        Gate::authorize('update', $post);
         return view('pages.posts.edit', [
             'post' => $post,
         ]);
     }
 
     public function update(PostRequest $request, Post $post) {
+        Gate::authorize('update', $post);
 
         // calculate new slug if title has changed
         $slug = $post->slug;
@@ -119,6 +120,8 @@ class PostController extends Controller {
     }
 
     public function destroy(Post $post) {
+        Gate::authorize('destroy', $post);
+
         $post->tags()->detach();
         return response($post->delete())->header('HX-Redirect', route('posts'));
     }
