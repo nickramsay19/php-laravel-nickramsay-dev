@@ -26,7 +26,15 @@ Route::group(['middleware' => 'web', 'guest'], function () {
     Route::name('roles')->prefix('/roles')->group(function () {
         Route::controller(RoleController::class)->group(function () {
             Route::get('/', 'index');
-            Route::get('/{role:name}', 'show')->name('.show');
+            Route::get('/create', 'create')->name('.create');
+            Route::post('/', 'store')->name('.store');
+
+            Route::prefix('/{role:name}')->group(function() {
+                Route::get('/', 'show')->name('.show');
+                Route::get('/edit', 'edit')->name('.edit');
+                Route::put('/', 'update')->name('.update');
+                Route::delete('/', 'destroy')->name('.destroy');
+            });
         });
     });
 

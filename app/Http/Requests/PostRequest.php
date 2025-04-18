@@ -24,8 +24,4 @@ class PostRequest extends FormRequest {
             'published' => ['sometimes', 'boolean'],
         ];
     }
-
-    protected function prepareForValidation() {
-        
-    }
 }
