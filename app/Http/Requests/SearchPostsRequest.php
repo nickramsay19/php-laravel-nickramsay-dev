@@ -20,6 +20,8 @@ class SearchPostsRequest extends FormRequest {
      */
     public function rules(): array {
         return [
+            'page' => ['sometimes', 'numeric', 'integer', 'min:1'],
+            'per_page' => ['sometimes', 'numeric', 'integer', 'min:5'],
             'search' => ['sometimes', 'string'],
             'sort_by' => ['sometimes'],
             'slugs' => ['sometimes', 'list', 'filled'],
@@ -63,5 +65,13 @@ class SearchPostsRequest extends FormRequest {
         $this->prepareCommaDelimitedStringToArrayForValidation('titles');
         $this->prepareCommaDelimitedStringToArrayForValidation('authors');
         $this->prepareCommaDelimitedStringToArrayForValidation('tags');
+    }
+
+    public function page(): int {
+        return $this->input('page', 1);
+    }
+
+    public function perPage(): int {
+        return $this->input('per_page', 5);
     }
 }

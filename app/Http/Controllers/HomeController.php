@@ -21,8 +21,6 @@ class HomeController extends Controller {
     }
 
     public function index(): View {
-        $this->log->info('Got request for home page');
-
         Gate::authorize('viewAny', Post::class);
 
         return view('pages.index', [

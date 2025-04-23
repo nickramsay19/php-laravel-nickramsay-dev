@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostRSSFeedController;
+use App\Http\Controllers\PostAtomFeedController;
 use App\Http\Controllers\PostCommandController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -23,19 +25,10 @@ Route::group(['middleware' => 'web', 'guest'], function () {
         Route::get('/logout', 'destroy')->name('logout');
     });
 
-    Route::name('roles')->prefix('/roles')->group(function () {
-        Route::controller(RoleController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::get('/create', 'create')->name('.create');
-            Route::post('/', 'store')->name('.store');
-
-            Route::prefix('/{role:name}')->group(function() {
-                Route::get('/', 'show')->name('.show');
-                Route::get('/edit', 'edit')->name('.edit');
-                Route::put('/', 'update')->name('.update');
-                Route::delete('/', 'destroy')->name('.destroy');
-            });
-        });
+    Route::name('feed')->group(function () {
+        Route::get('/feed', PostRSSFeedController::class);
+        Route::get('/feed/rss', PostRSSFeedController::class)->name('.rss');
+        Route::get('/feed/atom', PostAtomFeedController::class)->name('.atom');
     });
 
     Route::name('posts')->prefix('/posts')->group(function () {
@@ -70,6 +63,21 @@ Route::group(['middleware' => 'web', 'guest'], function () {
             Route::post('/', 'store')->name('.store');
         
             Route::prefix('/{tag:name}')->group(function() {
+                Route::get('/edit', 'edit')->name('.edit');
+                Route::put('/', 'update')->name('.update');
+                Route::delete('/', 'destroy')->name('.destroy');
+            });
+        });
+    });
+
+    Route::name('roles')->prefix('/roles')->group(function () {
+        Route::controller(RoleController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/create', 'create')->name('.create');
+            Route::post('/', 'store')->name('.store');
+
+            Route::prefix('/{role:name}')->group(function() {
+                Route::get('/', 'show')->name('.show');
                 Route::get('/edit', 'edit')->name('.edit');
                 Route::put('/', 'update')->name('.update');
                 Route::delete('/', 'destroy')->name('.destroy');

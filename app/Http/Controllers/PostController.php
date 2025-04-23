@@ -51,8 +51,8 @@ class PostController extends Controller {
                         $q->orderBy($sortByCol, $dir);
                     }
                 })
-                ->orderBy('created_at')
-                ->get(),
+                ->orderBy('created_at', 'desc')
+                ->paginate($request->perPage(), ['*'], 'page', $request->page()),
         ]);
     }
 
