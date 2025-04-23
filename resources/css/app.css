@@ -171,11 +171,7 @@ input[type=submit]:hover, button:hover {
 
 /* == POST BODY == */
 
-.post-body {
-    all: revert;
-}
-
-.post-body * {
+.post-body, .post-body > *:not(.mjx-container):not(:has(.mjx-container)) {
     all: revert;
 }
 

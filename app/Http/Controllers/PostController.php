@@ -121,7 +121,7 @@ class PostController extends Controller {
     }
 
     public function destroy(Post $post) {
-        Gate::authorize('destroy', $post);
+        Gate::authorize('delete', $post);
 
         $post->tags()->detach();
         return response($post->delete())->header('HX-Redirect', route('posts'));
