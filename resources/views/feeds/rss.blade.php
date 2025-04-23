@@ -1,5 +1,7 @@
 {{-- resources/views/feeds/rss.blade.php --}}
-{!! '<?xml version="1.0" encoding="utf-8"?>' !!}
+@php 
+    echo '<?xml version="1.0" encoding="UTF-8" ?>';
+@endphp
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>{{ config('app.name') }}</title>

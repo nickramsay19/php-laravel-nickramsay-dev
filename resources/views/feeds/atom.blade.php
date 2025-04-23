@@ -1,5 +1,7 @@
 {{-- resources/views/feeds/atom.blade.php --}}
-{!! '<?xml version="1.0" encoding="utf-8"?>' !!}
+@php 
+    echo '<?xml version="1.0" encoding="UTF-8" ?>';
+@endphp
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>{{ config('app.name') }}</title>
     <link href="{{ url('/posts') }}" rel="alternate" />
