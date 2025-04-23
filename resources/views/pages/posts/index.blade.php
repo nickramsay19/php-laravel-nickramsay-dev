@@ -41,7 +41,7 @@
             class="mt-2"
         />
 
-        <div class="flex flex-row gap-1 justify-between w-full text-center mt-2 pb-1">
+        <div class="flex flex-col md:flex-row gap-1 justify-left md:justify-between w-full mt-2 pb-1">
             <x-input.select 
                 name="tags"
                 
@@ -62,7 +62,7 @@
                 label="after: "
                 x-bind:value="params.get('created_after')"
                 x-on:input.debounce.300ms="setParam('created_after', $event.target.value)"
-                class="flex-none"
+                class="flex-none w-full sm:w-auto"
                 inline
             />
         </div>
@@ -70,5 +70,7 @@
         <hr class="text-dark-gamma last:hidden" />
         
         <x-posts.list id="posts-list" :posts="$posts" class="flex-none mt-2" />
+
+        <x-pagination :page="$page" :perPage="$perPage" :totalPages="$totalPages" class="mb-2 mt-4 pt-4 pb-2" />
     </div>
 </x-layout>

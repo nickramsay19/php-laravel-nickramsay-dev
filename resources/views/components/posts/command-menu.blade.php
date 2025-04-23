@@ -1,5 +1,5 @@
 @canany(['update', 'delete'], $post)
-    <div {{ $attributes->merge(['class' => 'flex gap-2']) }}>
+    <div {{ $attributes->merge(['class' => 'flex flex-col sm:flex-row gap-2 text-right']) }}>
         @can ('update', $post)
             @if ($post->published_at === null) 
                 <x-link hx-post="{{ route('posts.commands.publish', $post->slug) }}" hx-swap="none" class="text-yellow-500 underline cursor-pointer hover:font-semibold">publish</x-link>

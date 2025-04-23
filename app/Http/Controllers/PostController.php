@@ -27,8 +27,7 @@ class PostController extends Controller {
             $authorNames = User::whereIn('name', $authorNames)->pluck('name')->toArray();
         }
         
-        return view('pages.posts.index', [
-            'posts' => Post::viewable()->with('tags')
+        $posts = Post::viewable()->with('tags')
                 ->whereSlugIn($request->get('slugs'))
                 ->whereTitleIn($request->get('titles'))
                 ->whereAuthorNameIn($authorNames)
@@ -51,8 +50,13 @@ class PostController extends Controller {
                         $q->orderBy($sortByCol, $dir);
                     }
                 })
-                ->orderBy('created_at', 'desc')
-                ->paginate($request->perPage(), ['*'], 'page', $request->page()),
+                ->orderBy('created_at', 'desc');
+
+        return view('pages.posts.index', [
+            'page' => $request->page(),
+            'perPage' => $request->perPage(),
+            'totalPages' => ceil($posts->count() / $request->perPage()),
+            'posts' => $posts->paginate($request->perPage(), ['*'], 'page', $request->page()),
         ]);
     }
 
