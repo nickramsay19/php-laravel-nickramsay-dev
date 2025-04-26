@@ -52,10 +52,13 @@ class PostController extends Controller {
                 })
                 ->orderBy('created_at', 'desc');
 
+        $totalPages = intval(ceil($posts->count() / $request->perPage()));
+        $page = min($request->page(), max($totalPages, 1));
+
         return view('pages.posts.index', [
-            'page' => $request->page(),
+            'page' => $page,
             'perPage' => $request->perPage(),
-            'totalPages' => ceil($posts->count() / $request->perPage()),
+            'totalPages' => $totalPages,
             'posts' => $posts->paginate($request->perPage(), ['*'], 'page', $request->page()),
         ]);
     }

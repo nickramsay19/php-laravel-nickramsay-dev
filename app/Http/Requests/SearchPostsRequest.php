@@ -72,6 +72,6 @@ class SearchPostsRequest extends FormRequest {
     }
 
     public function perPage(): int {
-        return $this->input('per_page', 5);
+        return $this->input('per_page', 15);
     }
 }
