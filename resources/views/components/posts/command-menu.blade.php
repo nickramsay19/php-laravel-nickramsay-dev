@@ -1,9 +1,23 @@
+@props([
+    'post' => null,
+    'showIsListed' => false,
+])
+
 @canany(['update', 'delete'], $post)
     <div {{ $attributes->merge(['class' => 'flex flex-col sm:flex-row gap-2 text-right']) }}>
         @can ('update', $post)
             @if ($post->published_at === null) 
                 <x-link hx-post="{{ route('posts.commands.publish', $post->slug) }}" hx-swap="none" class="text-yellow-500 underline cursor-pointer hover:font-semibold">publish</x-link>
             @else
+
+                @if ($showIsListed)
+                    @if ($post->is_listed)
+                        <x-link hx-post="{{ route('posts.commands.unlist', $post->slug) }}" hx-swap="none" class="text-yellow-500 underline cursor-pointer hover:font-semibold">unlist</x-link>
+                    @else 
+                        <x-link hx-post="{{ route('posts.commands.list', $post->slug) }}" hx-swap="none" class="text-yellow-500 underline cursor-pointer hover:font-semibold">list</x-link>
+                    @endif
+                @endif
+                    
                 <x-link hx-post="{{ route('posts.commands.unpublish', $post->slug) }}" hx-swap="none" class="text-yellow-500 underline cursor-pointer hover:font-semibold">unpublish</x-link>
             @endif
 

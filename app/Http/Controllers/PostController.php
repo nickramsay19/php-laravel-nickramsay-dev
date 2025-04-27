@@ -28,6 +28,7 @@ class PostController extends Controller {
         }
         
         $posts = Post::viewable()->with('tags')
+                ->where('is_listed', 1)
                 ->whereSlugIn($request->get('slugs'))
                 ->whereTitleIn($request->get('titles'))
                 ->whereAuthorNameIn($authorNames)

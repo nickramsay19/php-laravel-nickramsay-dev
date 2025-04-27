@@ -50,6 +50,8 @@ Route::group(['middleware' => 'web', 'guest'], function () {
 
             Route::controller(PostCommandController::class)->name('.commands')->prefix('/commands')->group(function () {
                 Route::post('/trash', 'trash')->name('.trash');
+                Route::post('/list', 'list')->name('.list');
+                Route::post('/unlist', 'unlist')->name('.unlist');
                 Route::post('/publish', 'publish')->name('.publish');
                 Route::post('/unpublish', 'unpublish')->name('.unpublish');
             });

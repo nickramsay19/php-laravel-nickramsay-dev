@@ -8,7 +8,7 @@
                 @endforeach
             </div>
 
-            <x-posts.command-menu :post="$post" class="justify-end" />
+            <x-posts.command-menu :post="$post" showIsListed="true" class="justify-end" />
         </div>
 
         <div class="post-body">{!! Illuminate\Mail\Markdown::parse($post->body) !!}</div>

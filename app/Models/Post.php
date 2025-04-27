@@ -44,6 +44,10 @@ class Post extends Model {
         });
     }
 
+    public function listed() {
+        return $self->where('is_listed', 1);
+    }
+
     // return the value it was before
     public function unpublish() {
         $publishedAt = $this->published_at;
