@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostRSSFeedController;
 use App\Http\Controllers\PostAtomFeedController;
 use App\Http\Controllers\PostCommandController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
@@ -57,6 +58,16 @@ Route::group(['middleware' => 'web', 'guest'], function () {
             });
         });
     });
+
+    /*Route::name('images')->prefix('/images')->controller(ImageController::class)->group(function () {
+        Route::get('/create', 'create')->name('.create');
+        Route::post('/', 'store')->name('.store');
+
+        Route::prefix('/{image}')->group(function () {
+            //Route::get('/', 'show')->name('.show');
+            Route::delete('/', 'destroy')->name('.destroy');
+        });
+    });*/
 
     Route::name('tags')->prefix('/tags')->group(function () {
         Route::controller(TagController::class)->group(function () {
