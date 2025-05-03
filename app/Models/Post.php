@@ -48,6 +48,16 @@ class Post extends Model {
         return $self->where('is_listed', 1);
     }
 
+    public function loadCommentsToDepth(int $depth) {
+        $this->load('comments');
+
+        foreach ($this->comments as $comment) {
+            $comment->loadCommentsToDepth($depth - 1);
+        }
+
+        return $this;
+    }
+
     // return the value it was before
     public function unpublish() {
         $publishedAt = $this->published_at;
@@ -66,6 +76,14 @@ class Post extends Model {
 
     public function tags(): BelongsToMany {
         return $this->belongsToMany(Tag::class, 'post_tags');
+    }
+
+    public function parent() {
+        return $this->belongsTo(Post::class, 'parent_post_id');
+    }
+
+    public function comments() {
+        return $this->hasMany(Post::class, 'parent_post_id');
     }
 
     // attributes

@@ -12,6 +12,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CommentController;
 
 use App\Models\Post;
 
@@ -68,6 +69,9 @@ Route::group(['middleware' => 'web', 'guest'], function () {
             Route::delete('/', 'destroy')->name('.destroy');
         });
     });*/
+
+    Route::get('/comments/{comment}', [CommentController::class, 'show'])->name('comments.show');
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
     Route::name('tags')->prefix('/tags')->group(function () {
         Route::controller(TagController::class)->group(function () {

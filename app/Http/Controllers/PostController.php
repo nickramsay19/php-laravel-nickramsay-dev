@@ -28,6 +28,7 @@ class PostController extends Controller {
         }
         
         $posts = Post::viewable()->with('tags')
+                ->whereNotNull('slug')
                 ->where('is_listed', 1)
                 ->whereSlugIn($request->get('slugs'))
                 ->whereTitleIn($request->get('titles'))
@@ -66,6 +67,9 @@ class PostController extends Controller {
 
     public function show(?Post $post) {
         Gate::authorize('view', $post);
+
+        $post->loadCommentsToDepth(3);
+
         return view('pages.posts.show', [
             'post' => $post,
         ]);
@@ -96,6 +100,7 @@ class PostController extends Controller {
         $post->tags()->attach(Tag::whereIn('name', $request->safe()->tags)->pluck('id'));
 
         return response($post)->header('HX-Redirect', route('posts.show', $post->slug));
+    
     }
 
     public function edit(Post $post) {
