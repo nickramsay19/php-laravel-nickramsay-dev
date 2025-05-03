@@ -72,7 +72,7 @@ Route::group(['middleware' => 'web', 'guest'], function () {
     Route::name('tags')->prefix('/tags')->group(function () {
         Route::controller(TagController::class)->group(function () {
             Route::get('/', 'index');
-            Route::post('/create', 'create')->name('.create');
+            Route::get('/create', 'create')->name('.create');
             Route::post('/', 'store')->name('.store');
         
             Route::prefix('/{tag:name}')->group(function() {
