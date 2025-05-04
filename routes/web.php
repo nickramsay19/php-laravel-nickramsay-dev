@@ -64,6 +64,11 @@ Route::group(['middleware' => 'web', 'guest'], function () {
         Route::post('/', 'store')->name('.store');
     });
 
+    Route::name('users')->prefix('/users')->controller(UserController::class)->group(function () {
+        Route::get('/create', 'create')->name('.create');
+        Route::post('/', 'store')->name('.store');
+    });
+
     /*Route::name('images')->prefix('/images')->controller(ImageController::class)->group(function () {
         Route::get('/create', 'create')->name('.create');
         Route::post('/', 'store')->name('.store');
