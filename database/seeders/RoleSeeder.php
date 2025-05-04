@@ -29,6 +29,10 @@ class RoleSeeder extends Seeder {
         $updateRoles = Permission::updateOrCreate(['name' => 'update_roles'])->id;
         $deleteRoles = Permission::updateOrCreate(['name' => 'delete_roles'])->id;
 
+        $createUsers = Permission::updateOrCreate(['name' => 'create_users'])->id;
+        $updateUsers = Permission::updateOrCreate(['name' => 'update_users'])->id;
+        $deleteUsers = Permission::updateOrCreate(['name' => 'delete_users'])->id;
+
         Role::updateOrCreate(['name' => 'admin'])->permissions()->sync(Permission::all()->pluck('id'));
 
         $author = Role::updateOrCreate(['name' => 'author'])->permissions()->sync([

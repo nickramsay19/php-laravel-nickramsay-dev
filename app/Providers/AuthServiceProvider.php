@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Policies\PostPolicy;
 use App\Policies\TagPolicy;
 use App\Policies\RolePolicy;
+use App\Policies\UserPolicy;
  
 class AuthServiceProvider extends ServiceProvider {
     /**
@@ -25,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider {
         Post::class => PostPolicy::class,
         Tag::class => TagPolicy::class,
         Role::class => RolePolicy::class,
+        User::class => UserPolicy::class,
     ];
  
     /**
