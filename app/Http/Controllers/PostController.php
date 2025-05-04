@@ -27,8 +27,9 @@ class PostController extends Controller {
             $authorNames = User::whereIn('name', $authorNames)->pluck('name')->toArray();
         }
         
-        $posts = Post::viewable()->with('tags')
-                ->where('is_listed', 1)
+        $posts = Post::with('tags')
+                ->whereViewable()
+                ->whereIsListed()
                 ->whereSlugIn($request->get('slugs'))
                 ->whereTitleIn($request->get('titles'))
                 ->whereAuthorNameIn($authorNames)
@@ -66,6 +67,7 @@ class PostController extends Controller {
 
     public function show(?Post $post) {
         Gate::authorize('view', $post);
+
         return view('pages.posts.show', [
             'post' => $post,
         ]);
@@ -73,6 +75,7 @@ class PostController extends Controller {
 
     public function create() {
         Gate::authorize('create', Post::class);
+
         if (Auth::check()) {
             return view('pages.posts.create');
         } else {
@@ -100,6 +103,7 @@ class PostController extends Controller {
 
     public function edit(Post $post) {
         Gate::authorize('update', $post);
+        
         return view('pages.posts.edit', [
             'post' => $post,
         ]);

@@ -27,12 +27,21 @@ class Post extends Model {
     }
 
     public function publish() {
-        if ($this->published_at == null) {
-            $this->published_at = Carbon::now();
-            $this->save();
-        }
-        
-        return $this->published_at;
+        $publishedAt = $this->published_at;
+
+        $this->published_at = Carbon::now();
+        $this->save();
+
+        return $publishedAt;
+    }
+
+    public function unpublish() {
+        $publishedAt = $this->published_at;
+
+        $this->published_at = null;
+        $this->save();
+
+        return $publishedAt;
     }
 
     // utilities 
@@ -42,20 +51,6 @@ class Post extends Model {
             $query->whereNotNull('published_at')
                 ->orWhere('author_id', Auth::user()?->id);
         });
-    }
-
-    public function listed() {
-        return $self->where('is_listed', 1);
-    }
-
-    // return the value it was before
-    public function unpublish() {
-        $publishedAt = $this->published_at;
-
-        $this->published_at = null;
-        $this->save();
-
-        return $publishedAt;
     }
 
     // relations
@@ -144,5 +139,16 @@ class Post extends Model {
                 $q->whereIn('name', $tags);
             })
             : $query;
+    }
+
+    public  function scopeWhereViewable(Builder $query): Builder {
+        return $query->where(function ($query) {
+            $query->whereNotNull('published_at')
+                ->orWhere('author_id', Auth::user()?->id);
+        });
+    }
+
+    public function scopeWhereIsListed(Builder $query): Builder {
+        return $query->where('is_listed', 1);
     }
 }
