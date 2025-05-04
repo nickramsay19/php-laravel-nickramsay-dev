@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostRSSFeedController;
 use App\Http\Controllers\PostAtomFeedController;
 use App\Http\Controllers\PostCommandController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -57,6 +58,10 @@ Route::group(['middleware' => 'web', 'guest'], function () {
                 Route::post('/unpublish', 'unpublish')->name('.unpublish');
             });
         });
+    });
+
+    Route::name('comments')->prefix('/comments')->controller(CommentController::class)->group(function () {
+        Route::post('/', 'store')->name('.store');
     });
 
     /*Route::name('images')->prefix('/images')->controller(ImageController::class)->group(function () {

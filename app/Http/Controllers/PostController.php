@@ -68,6 +68,8 @@ class PostController extends Controller {
     public function show(?Post $post) {
         Gate::authorize('view', $post);
 
+        $post->load(['comments', 'comments.author']);
+
         return view('pages.posts.show', [
             'post' => $post,
         ]);
@@ -103,7 +105,7 @@ class PostController extends Controller {
 
     public function edit(Post $post) {
         Gate::authorize('update', $post);
-        
+
         return view('pages.posts.edit', [
             'post' => $post,
         ]);

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -61,6 +62,18 @@ class Post extends Model {
 
     public function tags(): BelongsToMany {
         return $this->belongsToMany(Tag::class, 'post_tags');
+    }
+
+    public function allComments(): HasMany {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function directComments(): HasMany {
+        return $this->allComments()->whereNull('reference_id');
+    }
+
+    public function comments() {
+        return $this->directComments()->with('referrers');
     }
 
     // attributes
