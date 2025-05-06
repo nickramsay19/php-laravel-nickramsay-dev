@@ -1,9 +1,10 @@
-<x-layout title="Nicholas Ramsay">
-    <p>I'm an aspiring software engineer, interested in systems programming, server administration, programming language development and much more.</p>
-    <p class="my-2">I will be completing my Bachelor of Software Engineering at the University of New South Wales in 2024.</p>
-
+<x-layout title="index">
     <section class="mt-2">
-        <x-link to="posts" class="text-lg font-mono underline">Posts</x-link>
+        
         <x-posts.list :posts="$posts" readonly />
+
+        <hr class="text-dark-gamma mt-4 mb-2" />
+        
+        <x-link to="posts" class="font-mono font-sembold underline">see all posts</x-link>
     </section>
 </x-layout>
